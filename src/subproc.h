@@ -7,7 +7,7 @@
  * sub/child process.
  *
  * Author: Richard Gale
- * Version: 9th October, 2022
+ * Version: 12th October, 2022
  */
 
 #ifndef SUBPROC_H

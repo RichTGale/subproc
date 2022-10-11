@@ -1,3 +1,14 @@
+/**
+ * main.c
+ *
+ * This file demonstrates the use of the subproc type.
+ * The subproc type launches a sub-process and uses it to 
+ * execute a shell command.
+ *
+ * Author: Richard Gale
+ * Version: 12th October, 2022
+ */
+
 #include <stdlib.h>
 
 #include "subproc.h"
