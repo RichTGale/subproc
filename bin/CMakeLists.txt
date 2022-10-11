@@ -1,3 +1,3 @@
-add_executable (twitcam.run ../src/main.c)
+add_executable (subproc.run ../src/main.c)
 
-target_link_libraries (twitcam.run LINK_PUBLIC subproc)
+target_link_libraries (subproc.run LINK_PUBLIC subproc)
