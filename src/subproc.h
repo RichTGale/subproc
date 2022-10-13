@@ -22,6 +22,8 @@
 #include <signal.h>
 #include <sys/wait.h>
 
+#include "mycutils.h"
+
 /**
  * The subproc data-structure.
  */
