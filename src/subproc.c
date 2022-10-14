@@ -65,7 +65,7 @@ void mkfname( char** ptr, char* dir, char* cmd, char* ext )
     char* cmd_cpy;
 
     // Allocating memory for the copy
-    cmd_cpy = ( char* ) malloc( sizeof( char ) * strlen( cmd ) );
+    cmd_cpy = ( char* ) malloc( sizeof( char ) * ( strlen( cmd ) + 1 ) );
 
     // Copying the command
     strcpy( cmd_cpy, cmd );
@@ -90,7 +90,7 @@ void subproc_exec( subproc* sp, char* cmd )
     char* fname_out; // Output file name for stdout.
     char* fname_err; // Output file name for stderr.
     // The relative path of the directory to save the output files in.
-    char* fdir = "../";
+    char* fdir = "../output/";
     // The file extensions
     char* fext_out = "_out.txt";
     char* fext_err = "_err.txt";
@@ -124,9 +124,9 @@ void subproc_exec( subproc* sp, char* cmd )
 
         // Allocating memory to the output file name strings.
         fname_out = ( char* ) malloc( sizeof( char ) * 
-                ( strlen( fdir ) + strlen( "ls" ) + strlen( fext_out ) ) );
+                ( strlen( fdir ) + strlen( cmd ) + strlen( fext_out ) + 1 ) );
         fname_err = ( char* ) malloc( sizeof( char ) * 
-                ( strlen( fdir ) + strlen( "ls" ) + strlen( fext_err ) ) );
+                ( strlen( fdir ) + strlen( cmd ) + strlen( fext_err ) + 1 ) );
         
         // Creating the file names for the output information
         mkfname( &fname_out, fdir, cmd, fext_out );

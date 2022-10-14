@@ -19,14 +19,14 @@ char* rmchar( char** str, char remove )
     // Overwriting the unwanted character.
     for ( i = 0; i < len; i++ )
     {
-        if ( (*str)[i] == remove )
+        if ( ( *str )[i] == remove )
         {
             // Setting the source and destinations points for moving.
-            src = &( (*str)[i + 1] );
-            dst = &( (*str)[i] );
+            src = &( ( *str )[i + 1] );
+            dst = &( ( *str )[i] );
 
             // Overwriting an unwanted character.
-             memmove(dst, src, ( sizeof(char) * strlen( *str ) ) - 
+            memmove(dst, src, ( sizeof(char) * strlen( *str ) ) - 
                                     ( sizeof( char ) * i ) );
 
             // Decrementing the index so we will check the 
@@ -39,7 +39,7 @@ char* rmchar( char** str, char remove )
     }
 
     // Designating the end of the string.
-    (*str)[total_chars] = '\0';
+    ( *str )[total_chars] = '\0';
 }
 
 /**
