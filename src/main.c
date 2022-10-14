@@ -11,6 +11,7 @@
 
 #include <stdlib.h>
 
+#include "mycutils.h"
 #include "subproc.h"
 
 int main (int argc, char* argv[])

@@ -6,6 +6,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
+
+/**
+ * Removes all cases of the provided char from the string at the
+ * provided pointer.
+ */
+char* rmchar( char** str, char remove );
+
+/**
+ * Prints a timestamp to the provided file-stream.
+ */
+void timestamp( FILE* stream );
 
 /**
  * Opens the file with the provided file name in the provided mode.
@@ -20,11 +32,5 @@ FILE* open_file( char* fname, char* mode );
  * stderr and the program will exit.
  */
 void close_file( FILE* fp );
-
-/**
- * Removes all cases of the provided char from the string at the
- * provided pointer.
- */
-char* rmchar( char** str, char remove );
 
 #endif //MYCUTILS

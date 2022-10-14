@@ -12,10 +12,6 @@
 
 #include "subproc.h"
 
-#define DUP_ERROR 3 
-#define PIPE_ERROR 4
-#define FORK_ERROR 5
-
 /**
  * The internal data of the subproc data-structure.
  */
@@ -53,36 +49,35 @@ void duperr( int fdold, int fdnew )
     if ( dup2( fdold, fdnew ) == -1 ) 
     {    
         // There was an error.
-        fprintf( stderr, "dup2 failed on fileno() %s", strerror( errno ) );
-        exit ( DUP_ERROR );
+        timestamp( stderr );
+        fprintf( stderr, "dup2 failed on fileno() %s\n", strerror( errno ) );
+        exit( EXIT_FAILURE );
     }
 }
 
 /**
- * Concatenates three strings.
+ * Creates a file name from a directory path, a shell command,
+ * and a file extension.
  */
-void mkfname(char** ptr, char* dir, char* body, char* ext)
+void mkfname( char** ptr, char* dir, char* cmd, char* ext )
 {
     // A copy of the body
-    char* body_cpy;
+    char* cmd_cpy;
 
     // Allocating memory for the copy
-    body_cpy = ( char* ) malloc( sizeof( char ) * strlen( body ) );
+    cmd_cpy = ( char* ) malloc( sizeof( char ) * strlen( cmd ) );
 
     // Copying the command
-    strcpy( body_cpy, body );
+    strcpy( cmd_cpy, cmd );
 
     // Removing unwanted characters from the copy
-    rmchar( &body_cpy, '/' );
-    rmchar( &body_cpy, '.' ); 
+    rmchar( &cmd_cpy, '/' );
+    rmchar( &cmd_cpy, '.' ); 
 
-    // Building the file name
-    strcat( *ptr, dir );
-    strcat( *ptr, body_cpy);
-    strcat( *ptr, ext );
+    sprintf( *ptr, "%s%s%s", dir, cmd_cpy, ext );
 
     // Unallocating memory for the copy
-    free( body_cpy );
+    free( cmd_cpy );
 }
 
 /**
@@ -105,9 +100,10 @@ void subproc_exec( subproc* sp, char* cmd )
     {
         // There was an error creating the pipe so we are printing it on
         // and exiting the program.
+        timestamp( stderr );
         fprintf( stderr, "ERROR: In exec_child_process(): "
-                            "pipe() - %s", strerror( errno ) );
-        exit( PIPE_ERROR );
+                            "pipe() - %s\n", strerror( errno ) );
+        exit( EXIT_FAILURE );
     }
 
     // Attempting to create the child process.
@@ -115,25 +111,26 @@ void subproc_exec( subproc* sp, char* cmd )
     {
         // There was an error creating the child process so we are printing
         // it and exiting the program.
+        timestamp( stderr );
         fprintf( stderr, "ERROR: In exec_child_process: "
-                            "fork() - %s", strerror( errno ) );
-        exit( FORK_ERROR );
+                            "fork() - %s\n", strerror( errno ) );
+        exit( EXIT_FAILURE );
     }
     else if ( ( *sp )->pid == 0 )    // The child process
     {
         // Printing status message.
+        timestamp( stdout ); // This call creates a bug with creating a file name.
         fprintf( stdout, "Creating sub-process...\n" );
 
         // Allocating memory to the output file name strings.
         fname_out = ( char* ) malloc( sizeof( char ) * 
-                    ( strlen( fdir ) + strlen( cmd ) + strlen( fext_out ) ) );
+                ( strlen( fdir ) + strlen( "ls" ) + strlen( fext_out ) ) );
         fname_err = ( char* ) malloc( sizeof( char ) * 
-            ( strlen( fdir ) + strlen( cmd ) + strlen( fext_err ) ) );
-
-
-        // Creating file names for stdout and stderr
-        mkfname(&fname_out, "../output/", cmd, "_out.txt");
-        mkfname(&fname_err, "../output/", cmd, "_err.txt");
+                ( strlen( fdir ) + strlen( "ls" ) + strlen( fext_err ) ) );
+        
+        // Creating the file names for the output information
+        mkfname( &fname_out, fdir, cmd, fext_out );
+        mkfname( &fname_err, fdir, cmd, fext_err );
 
         // Setting the read descriptor of the child process to 
         // be stdin's descriptor.
@@ -160,12 +157,14 @@ void subproc_exec( subproc* sp, char* cmd )
         free( fname_err );
 
         // Printing status message.
+        timestamp( stdout );
         fprintf( stdout, "Sub-process created... Executing command...\n" );
 
         // Executing the command as the child process.
         execl ( "/bin/sh", "sh", "-c", cmd, NULL );
         
         // There was an error executing the command so we are printing it.
+        timestamp( stderr );
         fprintf( stderr, "execl failed with error - %s", strerror( errno ) );
     }
 }
@@ -179,6 +178,7 @@ void subproc_term( subproc* sp )
     int status; // The exit status of the process.
 
     // Printing status message.
+    timestamp( stdout );
     fprintf( stdout, "Terminating sub-process...\n" );
 
     // Terminating the process.
@@ -190,11 +190,13 @@ void subproc_term( subproc* sp )
         if ( ( ( *sp )->pid = waitpid( ( *sp )->pid, &status, WNOHANG ) ) == -1 )
         {
             // There was an error waiting for the process to exit.
+            timestamp( stderr );
             fprintf( stderr, "ERROR: in term_child_process(): wait() error!\n");
         }
         else if ( ( *sp )->pid == 0 )
         {
             // The process is still running.
+            timestamp( stdout );
             fprintf( stdout, "Waiting for process to terminate...\n");
             sleep ( 1 );
         }
@@ -206,17 +208,20 @@ void subproc_term( subproc* sp )
             {
                 // The process exited normally so we are priting its
                 // exit status.
+                timestamp( stdout );
                 fprintf( stdout, "The process exited normally "
                         "with exit status %d.\n", WEXITSTATUS( status ) );
             }
             else if ( WIFSIGNALED( status ) )
             {
                 // The process exited because of an uncaught signal.
-                fprintf( stdout, "The process did not exit normally");
+                timestamp( stdout );
+                fprintf( stdout, "The process did not exit normally\n");
             }
             else
             {
                 // The process did not exit.
+                timestamp( stdout );
                 fprintf( stdout, "The child process did not exit\n");
             }
         }
