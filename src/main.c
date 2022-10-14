@@ -17,8 +17,8 @@
 #include "mycutils.h"
 #include "subproc.h"
 
-#define SUBPROC_RUN_SECS ( uint64_t ) 10
-#define BLOCK_EXEC_FREQ ( uint64_t ) 1
+#define SPROC_RUN_TIME NANOS_PER_SEC * ( uint64_t ) 10
+#define BLOCK_RUN_FREQ NANOS_PER_SEC * ( uint64_t ) 1
 
 int main (int argc, char* argv[])
 {
@@ -41,7 +41,7 @@ int main (int argc, char* argv[])
     // Running the processes.
     while ( running )
     {
-        if ( check_timer( ts_sp, NANOS_PER_SEC * SUBPROC_RUN_SECS ) )
+        if ( check_timer( ts_sp, SPROC_RUN_TIME ) )
         {
             // The sub-process has run for its specified period of time
             // so here we are terminating it.
@@ -51,7 +51,7 @@ int main (int argc, char* argv[])
             subproc_free( &sp );
             running = false;
         }
-        else if ( check_timer( ts_out, NANOS_PER_SEC * BLOCK_EXEC_FREQ ) )
+        else if ( check_timer( ts_out, BLOCK_RUN_FREQ ) )
         {
             // This block is run once per the specified number of seconds
             // while the child process is running.
