@@ -7,7 +7,7 @@
  * sub/child process.
  *
  * Author: Richard Gale
- * Version: 12th October, 2022
+ * Version: 14th October, 2022
  */
 
 #include "subproc.h"
