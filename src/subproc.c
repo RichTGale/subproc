@@ -48,8 +48,9 @@ void duperr( int fdold, int fdnew )
     if ( dup2( fdold, fdnew ) == -1 ) 
     {    
         // There was an error.
-        timestamp( stderr );
-        fprintf( stderr, "dup2 failed on fileno() %s\n", strerror( errno ) );
+        fprintf( stderr, 
+                "[ %s ] dup2 failed on fileno() %s\n", 
+                timestamp(), strerror( errno ) );
         exit( EXIT_FAILURE );
     }
 }
@@ -99,9 +100,9 @@ void subproc_exec( subproc* sp, char* cmd )
     {
         // There was an error creating the pipe so we are printing it on
         // and exiting the program.
-        timestamp( stderr );
-        fprintf( stderr, "ERROR: In exec_child_process(): "
-                            "pipe() - %s\n", strerror( errno ) );
+        fprintf( stderr, "[ %s ] ERROR: In exec_child_process(): "
+                            "pipe() - %s\n", 
+                            timestamp(), strerror( errno ) );
         exit( EXIT_FAILURE );
     }
 
@@ -110,16 +111,15 @@ void subproc_exec( subproc* sp, char* cmd )
     {
         // There was an error creating the child process so we are printing
         // it and exiting the program.
-        timestamp( stderr );
         fprintf( stderr, "ERROR: In exec_child_process: "
-                            "fork() - %s\n", strerror( errno ) );
+                            "fork() - %s\n", 
+                            timestamp(), strerror( errno ) );
         exit( EXIT_FAILURE );
     }
     else if ( ( *sp )->pid == 0 )    // The child process
     {
         // Printing status message.
-        timestamp( stdout ); // This call creates a bug with creating a file name.
-        fprintf( stdout, "Creating sub-process...\n" );
+        fprintf( stdout, "[ %s ] Creating sub-process...\n", timestamp() );
 
         // Allocating memory to the output file name strings.
         fname_out = ( char* ) malloc( sizeof( char ) * 
@@ -157,14 +157,16 @@ void subproc_exec( subproc* sp, char* cmd )
 
         // Printing status message.
         timestamp( stdout );
-        fprintf( stdout, "Sub-process created... Executing command...\n" );
+        fprintf( stdout, 
+                "[ %s ] Sub-process created... Executing command...\n",
+                timestamp() );
 
         // Executing the command as the child process.
         execl ( "/bin/sh", "sh", "-c", cmd, NULL );
         
         // There was an error executing the command so we are printing it.
-        timestamp( stderr );
-        fprintf( stderr, "execl failed with error - %s", strerror( errno ) );
+        fprintf( stderr, "[ %s ] execl failed with error - %s", 
+                timestamp(), strerror( errno ) );
     }
 }
 
@@ -177,8 +179,7 @@ void subproc_term( subproc* sp )
     int status; // The exit status of the process.
 
     // Printing status message.
-    timestamp( stdout );
-    fprintf( stdout, "Terminating sub-process...\n" );
+    fprintf( stdout, "[ %s ] Terminating sub-process...\n", timestamp() );
 
     // Terminating the process.
     kill( ( *sp )->pid, SIGTERM);
@@ -189,14 +190,15 @@ void subproc_term( subproc* sp )
         if ( ( ( *sp )->pid = waitpid( ( *sp )->pid, &status, WNOHANG ) ) == -1 )
         {
             // There was an error waiting for the process to exit.
-            timestamp( stderr );
-            fprintf( stderr, "ERROR: in term_child_process(): wait() error!\n");
+            fprintf( stderr, 
+                    "[ %s ] ERROR: in term_child_process(): wait() error!\n",
+                    timestamp() );
         }
         else if ( ( *sp )->pid == 0 )
         {
             // The process is still running.
-            timestamp( stdout );
-            fprintf( stdout, "Waiting for process to terminate...\n");
+            fprintf( stdout, "[ %s ] Waiting for process to terminate...\n",
+                    timestamp() );
             sleep ( 1 );
         }
         else
@@ -207,21 +209,22 @@ void subproc_term( subproc* sp )
             {
                 // The process exited normally so we are priting its
                 // exit status.
-                timestamp( stdout );
-                fprintf( stdout, "The process exited normally "
-                        "with exit status %d.\n", WEXITSTATUS( status ) );
+                fprintf( stdout, "[ %s ] The process exited normally "
+                        "with exit status %d.\n", 
+                        timestamp(), WEXITSTATUS( status ) );
             }
             else if ( WIFSIGNALED( status ) )
             {
                 // The process exited because of an uncaught signal.
-                timestamp( stdout );
-                fprintf( stdout, "The process did not exit normally\n");
+                fprintf( stdout, 
+                        "[ %s ] The process did not exit normally\n",
+                        timestamp() );
             }
             else
             {
                 // The process did not exit.
-                timestamp( stdout );
-                fprintf( stdout, "The child process did not exit\n");
+                fprintf( stdout, "[ %s ] The child process did not exit\n",
+                        timestamp() );
             }
         }
     } while ( ( *sp )->pid == 0 );

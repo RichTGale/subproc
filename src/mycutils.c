@@ -15,7 +15,13 @@
 void start_timer( struct timespec* ts )
 {
     // Obtaining the current time.
-    clock_gettime( CLOCK_REALTIME, ts);
+    if ( (clock_gettime( CLOCK_REALTIME, ts) ) == -1 )
+    {
+        fprintf( stderr, 
+                "[ %s ] ERROR: in function start_timer(): clock_gettime() "
+                "returned an error: %s",
+                timestamp(), strerror( errno ) );
+    }
 }
 
 /**
@@ -84,9 +90,9 @@ char* rmchar( char** str, char remove )
 }
 
 /**
- * Prints a timestamp to the provided file-stream.
+ * Returns a timestamp.
  */
-void timestamp( FILE* stream )
+char* timestamp()
 {
     time_t current_time;
     char* c_time_string;
@@ -114,8 +120,7 @@ void timestamp( FILE* stream )
     // Removing the newline character that was added by ctime().
     rmchar( &c_time_string, '\n' );
 
-    // Printing the time to the file stream.
-    fprintf( stream, "[ %s ] ", c_time_string);
+    return c_time_string;
 }
 
 /**
@@ -132,9 +137,8 @@ FILE* open_file( char* fname, char* mode )
     if ( ( fp = fopen( fname, mode ) ) == NULL )
     {
         // There was an error opening the file.
-        timestamp( stderr );
-        fprintf( stderr, "ERROR: In open_file(): "
-                    "Could not open file %s\n", fname );
+        fprintf( stderr, "[ %s ] ERROR: In open_file(): "
+                    "Could not open file %s\n", timestamp(), fname );
         exit( EXIT_FAILURE );
     }
 
@@ -152,8 +156,7 @@ void close_file( FILE* fp )
     if ( fclose( fp ) != 0 )
     {
         // There was an error closing the file stream.
-        timestamp( stderr );
-        fprintf( stderr, "Error closing file\n" );
+        fprintf( stderr, "[ %s ] Error closing file\n", timestamp() );
         exit( EXIT_FAILURE );
     }
 }

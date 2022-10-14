@@ -17,6 +17,7 @@
 #include <time.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include <errno.h>
 
 #define NANOS_PER_SEC 1000000000
 
@@ -38,9 +39,9 @@ bool check_timer( struct timespec ts_start, uint64_t wait_time );
 char* rmchar( char** str, char remove );
 
 /**
- * Prints a timestamp to the provided file-stream.
+ * Returns a timestamp.
  */
-void timestamp( FILE* stream );
+char* timestamp();
 
 /**
  * Opens the file with the provided file name in the provided mode.

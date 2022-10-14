@@ -35,15 +35,15 @@ int main (int argc, char* argv[])
         {
             if ( check_timer( ts_out, NANOS_PER_SEC * ( uint64_t) 1 ) )
             {
-                timestamp( stdout );
-                fprintf( stdout, "Sub-process is running...\n" );
+                fprintf( stdout, 
+                        "[ %s ] Sub-process is running...\n", timestamp() );
                 start_timer( &ts_out );
             }
         }
         else
         {
-            timestamp( stdout );
-            fprintf( stdout, "Sub-process is being terminated...\n" );
+            fprintf( stdout, "[ %s ] Sub-process is being terminated...\n", 
+                    timestamp() );
             subproc_term( &sp );
             subproc_free( &sp );
             running = false;
