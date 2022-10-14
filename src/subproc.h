@@ -50,11 +50,4 @@ void subproc_exec( subproc* sp, char* cmd );
  */
 void subproc_term( subproc* sp );
 
-/**
- * Executes the provided command as a sub-process before terminating
- * the sub-process after the provided run-time. If the privided run-time
- * is zero (0) then the process is terminated immediately.
- */
-void subproc_run(subproc* sp, char* CMD, unsigned int runtime );
-
 #endif // SUBPROC_H

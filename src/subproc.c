@@ -3,8 +3,7 @@
  *
  * This file contains the internal data and procedure definitions for the 
  * subproc type.
- * The subproc type asyncronously executes shell commands as a 
- * sub/child process.
+ * The subproc type executes shell commands as a sub/child process.
  *
  * Author: Richard Gale
  * Version: 14th October, 2022
@@ -228,23 +227,4 @@ void subproc_term( subproc* sp )
     } while ( ( *sp )->pid == 0 );
 }
 
-/**
- * Executes the provided command as a sub-process before terminating
- * the sub-process after the provided run-time. If the privided run-time
- * is zero (0) then the process is terminated immediately.
- */
-void subproc_run( subproc* sp, char* cmd, unsigned int runtime )
-{
-    // Executing the command as a sub-process.
-    subproc_exec( sp, cmd );
-
-    // Letting the process run for a duration.
-    if ( runtime > 0 )
-        sleep( runtime );
-   
-    // Printing status message.
-
-    // Terminating the sub-process.
-    subproc_term( sp );
-}
 
