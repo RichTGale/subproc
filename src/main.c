@@ -20,9 +20,7 @@ int main (int argc, char* argv[])
     
     subproc_init( &s );
 
-    subproc_run( &s, "motion -c ../motion.conf", 10 );
-
-    sleep( 3 );
+    subproc_run( &s, "ls", 1 );
         
     subproc_free( &s );
 
