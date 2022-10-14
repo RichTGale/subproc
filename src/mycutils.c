@@ -1,8 +1,49 @@
+/**
+ * mycutils.c
+ *
+ * This file contains the definitions of various utility functions.
+ *
+ * Author: Richard Gale
+ * Version: 14th October, 2022
+ */
 
 #include "mycutils.h"
 
-#define FILE_OPEN_ERROR 1
-#define FILE_CLOSE_ERROR 2
+/**
+ * Obtains the current time, storing it in a timespec.
+ */
+void start_timer( struct timespec* ts )
+{
+    // Obtaining the current time.
+    clock_gettime( CLOCK_REALTIME, ts);
+}
+
+/**
+ * Returns true if the provided wait-time has elapsed since the
+ * provided timespec was given a time.
+ */
+bool check_timer( struct timespec start, uint64_t wait_time )
+{
+    struct timespec current; // The current time.
+    struct timespec elapsed; // The elapsed time
+    bool wait_has_elapsed = false; // Whether the designated time has elapsed.
+
+    // Obtaining the current time.
+    clock_gettime( CLOCK_REALTIME, &current );
+
+    // Calculating the elapsed time.
+    elapsed.tv_sec = current.tv_sec - start.tv_sec;
+    elapsed.tv_nsec = current.tv_nsec - start.tv_nsec;
+
+    // Determining whether the disignated time has elapsed.
+    if ( ( elapsed.tv_sec * NANOS_PER_SEC ) + elapsed.tv_nsec >= wait_time )
+    {
+        wait_has_elapsed = true; // The designated time has elapsed.
+    }
+
+    // Retuning whether the designated time has elapsed.
+    return wait_has_elapsed;
+}
 
 /**
  * Removes all cases of the provided char from the string at the
@@ -94,7 +135,7 @@ FILE* open_file( char* fname, char* mode )
         timestamp( stderr );
         fprintf( stderr, "ERROR: In open_file(): "
                     "Could not open file %s\n", fname );
-        exit( FILE_OPEN_ERROR );
+        exit( EXIT_FAILURE );
     }
 
     // Returning the pointer to the file stream.
@@ -113,6 +154,6 @@ void close_file( FILE* fp )
         // There was an error closing the file stream.
         timestamp( stderr );
         fprintf( stderr, "Error closing file\n" );
-        exit( FILE_CLOSE_ERROR );
+        exit( EXIT_FAILURE );
     }
 }

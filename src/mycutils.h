@@ -1,4 +1,12 @@
-
+/**
+ * mycutils.h
+ *
+ * This file contains the public declarations for various
+ * utility funtions.
+ *
+ * Author: Richard Gale
+ * Version: 14th October, 2022
+ */
 
 #ifndef MYCUTILS_H
 #define MYCUTILS_H
@@ -7,6 +15,21 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <stdbool.h>
+#include <stdint.h>
+
+#define NANOS_PER_SEC 1000000000
+
+/**
+ * Obtains the current time, storing it in a timespec.
+ */
+void start_timer( struct timespec* ts );
+
+/**
+ * Returns true if the provided wait-time has elapsed since the
+ * provided timespec was given a time.
+ */
+bool check_timer( struct timespec ts_start, uint64_t wait_time );
 
 /**
  * Removes all cases of the provided char from the string at the
