@@ -1,6 +1,5 @@
 #!/bin/bash
 
-cmake -H. -B ./debug -DCMAKE_BUILD_TYPE=debug -DCMAKE_EXPORT_COMPILE_COMMANDS=YES
-ln -s ./debug/compile_commands.json .
+cmake -H. -B ./ -DCMAKE_BUILD_TYPE=debug -DCMAKE_EXPORT_COMPILE_COMMANDS=YES
 
-mkdir ./output ./media
+mkdir ./output
