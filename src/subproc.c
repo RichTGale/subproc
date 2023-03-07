@@ -90,7 +90,7 @@ void subproc_exec( subproc* sp, char* cmd )
     char* fname_out; // Output file name for stdout.
     char* fname_err; // Output file name for stderr.
     // The relative path of the directory to save the output files in.
-    char* fdir = "../output/";
+    char* fdir = "output/";
     // The file extensions
     char* fext_out = "_out.txt";
     char* fext_err = "_err.txt";
