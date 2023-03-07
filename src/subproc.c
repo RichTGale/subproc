@@ -74,7 +74,7 @@ void mkfname( char** ptr, char* dir, char* cmd, char* ext )
     rmchar( &cmd_cpy, '/' );
     rmchar( &cmd_cpy, '.' ); 
     
-    // Concatenating the file name and path.
+    // Concatenating the file directory, name and extension.
     sprintf( *ptr, "%s%s%s", dir, cmd_cpy, ext );
 
     // Unallocating memory for the copy
