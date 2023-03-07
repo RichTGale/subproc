@@ -30,7 +30,7 @@ int main (int argc, char* argv[])
     // Initialising the subprocess and using it to execute a
     // shell command.
     subproc_init( &sp );
-    subproc_exec( &sp, "ls" );
+    subproc_exec( &sp, "ls", "../output/" );
 
     // Setting the timespecs with the current time.
     start_timer( &ts_sp );

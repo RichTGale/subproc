@@ -83,14 +83,13 @@ void mkfname( char** ptr, char* dir, char* cmd, char* ext )
 /**
  * Executes the provided command as a sub-process and returns its PID.
  */
-void subproc_exec( subproc* sp, char* cmd )
+void subproc_exec( subproc* sp, char* cmd, char* fdir )
 {
     FILE* fout; // File for stdout
     FILE* ferr; // File for stderr
     char* fname_out; // Output file name for stdout.
     char* fname_err; // Output file name for stderr.
-    // The relative path of the directory to save the output files in.
-    char* fdir = "output/";
+    
     // The file extensions
     char* fext_out = "_out.txt";
     char* fext_err = "_err.txt";

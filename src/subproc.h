@@ -42,7 +42,7 @@ void subproc_free(subproc* sp);
 /**
  * Executes the provided command as a sub-process and returns its PID.
  */
-void subproc_exec( subproc* sp, char* cmd );
+void subproc_exec( subproc* sp, char* cmd, char* fdir );
 
 /**
  * Requests for the provided sub-process to be terminated, waits for it to
