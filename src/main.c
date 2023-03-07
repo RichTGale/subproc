@@ -24,9 +24,7 @@ int main (int argc, char* argv[])
 {
     subproc sp; // The sub-process.
     struct timespec ts_sp; // timespec for timing the sub-process.
-    // This timespec times the execution of a code block that runs
-    // while the sub-process is running.
-    struct timespec ts_out;
+    struct timespec ts_out; // Times output for the user about whether the sub-process is running.
     bool running = true; // Whether the loop should loop.
 
     // Initialising the subprocess and using it to execute a
