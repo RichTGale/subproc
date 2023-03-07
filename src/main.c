@@ -41,18 +41,16 @@ int main (int argc, char* argv[])
     {
         if ( check_timer( ts_sp, SPROC_RUN_TIME ) )
         {
-            // The sub-process has run for its specified period of time
-            // so here we are terminating it.
+            // Telling the user that the subprocess is going to be terminated.
             fprintf( stdout, "[ %s ] Sub-process is being terminated...\n", 
                     timestamp() );
-            subproc_term( &sp );
-            subproc_free( &sp );
+            subproc_term( &sp );    // Terminating the subprocess.
+            subproc_free( &sp );    // Freeing memory allocated to the subproc.
             running = false;
         }
         else if ( check_timer( ts_out, BLOCK_RUN_FREQ ) )
         {
-            // This block is run once per the specified number of seconds
-            // while the child process is running.
+            // Telling the user that the subprocess is still running.
 	        fprintf( stdout, 
                     "[ %s ] Sub-process is running...\n", timestamp() );
 	        start_timer( &ts_out ); // Restarting the timer. 
