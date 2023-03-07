@@ -82,7 +82,7 @@ void mkfname( char** ptr, char* dir, char* cmd, char* ext )
 }
 
 /**
- * Executes the provided command as a sub-process and returns its PID.
+ * Executes the provided command as a sub-process.
  */
 void subproc_exec( subproc* sp, char* cmd, char* fdir )
 {
