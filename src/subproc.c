@@ -100,7 +100,7 @@ void subproc_exec( subproc* sp, char* cmd, char* fdir )
     {
         // There was an error creating the pipe so we are printing it on
         // and exiting the program.
-        fprintf( stderr, "[ %s ] ERROR: In exec_child_process(): "
+        fprintf( stderr, "[ %s ] ERROR: In subproc_exec(): "
                             "pipe() - %s\n", 
                             timestamp(), strerror( errno ) );
         exit( EXIT_FAILURE );
