@@ -111,7 +111,7 @@ void subproc_exec( subproc* sp, char* cmd, char* fdir )
     {
         // There was an error creating the child process so we are printing
         // it and exiting the program.
-        fprintf( stderr, "ERROR: In exec_child_process: "
+        fprintf( stderr, "ERROR: In subproc_exec() "
                             "fork() - %s\n", 
                             timestamp(), strerror( errno ) );
         exit( EXIT_FAILURE );
