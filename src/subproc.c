@@ -191,7 +191,7 @@ void subproc_term( subproc* sp )
         {
             // There was an error waiting for the process to exit.
             fprintf( stderr, 
-                    "[ %s ] ERROR: in term_child_process(): wait() error!\n",
+                    "[ %s ] ERROR: in subproc_term(): wait() error!\n",
                     timestamp() );
         }
         else if ( ( *sp )->pid == 0 )
