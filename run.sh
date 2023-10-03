@@ -1,3 +1,12 @@
 #!/bin/bash
 
-./bin/subproc.run
+DIRECTORY="output"
+
+cd ./build/bin
+if [ ! -d "${DIRECTORY}" ]; then
+    mkdir ./output
+fi
+
+./subproc.run
+
+cd ../../
