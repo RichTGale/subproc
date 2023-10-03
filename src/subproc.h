@@ -1,13 +1,13 @@
 /**
  * subproc.h
  *
- * This file contains the publicly available data-structure and
- * procedure declarations for the subproc type.
- * The subproc type asyncronously executes shell commands as a 
- * sub/child process.
+ * This file contains the publicly available data-structure and function
+ * prototype declarations for the subproc type.
+ * 
+ * The subproc type executes shell commands as a sub/child process.
  *
  * Author: Richard Gale
- * Version: 14th October, 2022
+ * Version: 1.0.1
  */
 
 #ifndef SUBPROC_H
@@ -25,28 +25,29 @@
 #include "mycutils.h"
 
 /**
- * The subproc data-structure.
+ * This is the subproc data-structure.
  */
 typedef struct subproc_data* subproc;
 
 /**
- * Allocates memory to the provided subproc.
+ * This function initialises the subproc provided to it.
  */
 void subproc_init(subproc* sp);
 
 /**
- * Frees the memory allocated to the subproc.
+ * This function destroys the subproc provided to it.
  */
 void subproc_free(subproc* sp);
 
 /**
- * Executes the provided command as a sub-process.
+ * This function executes the command provided to it as a sub-process.
  */
 void subproc_exec( subproc* sp, char* cmd, char* fdir );
 
 /**
- * Requests for the provided sub-process to be terminated, waits for it to
- * exit, and reports its exit-status to stdout or stderr if there was an error.
+ * This function requests for the provided sub-process to be terminated, waits
+ * for it to exit, and reports its exit-status to stdout or stderr if there
+ * was an error.
  */
 void subproc_term( subproc* sp );
 
