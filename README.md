@@ -1,8 +1,13 @@
 # subproc
-Launch and run a sub-process.
+Run a sub-process.
 
 ## Setup
-You can install cmake and run:
+### Option 1:
+You need `cmake` installed to run `compile.sh`. On debian, for example, you can install `cmake` by running:
+```
+apt install cmake
+```
+After cmake is installed, run:
 ```
 ./compile.sh
 ```
@@ -10,10 +15,9 @@ then
 ```
 ./run.sh
 ```
-to see things working. 
+to run the example `main.c`.
 
-After you run the program, you can find two files in ```output/``` where the subprocess may have output information.
+After you run the program, you can find two files in `output/` where `ls` (the command run in the example) may have output information.
 
-Alternatively, you can find the source files in the ```src/``` directory and extract them to use in your own way.
-
-In ```src/main.c``` you can see that I have made the program run the `ls` command.
+### Option 2:
+Alternatively, you can find the source files in the `src/` directory and extract them to use in your own way.
