@@ -4,11 +4,11 @@ Launch and run a sub-process.
 ## Setup
 You can install cmake and run:
 ```
-./install.sh
+./compile.sh
 ```
 then
 ```
-./sh run.sh
+./run.sh
 ```
 to see things working. 
 
