@@ -18,31 +18,42 @@
 #include "mycutils.h"
 #include "subproc.h"
 
-/* Definitions for timers. */
-#define SPROC_RUN_TIME NANOS_PER_SEC * (uint64_t) 10
-#define BLOCK_RUN_FREQ NANOS_PER_SEC * (uint64_t) 1
+/* This is the number of nanoseconds the subproc will run for. */
+#define SPROC_RUN_TIME   NANOS_PER_SEC * (uint64_t) 10
 
+/* This is the number of nanoseconds to wait between printing
+ * status messages. */
+#define STATUS_FREQ_TIME NANOS_PER_SEC * (uint64_t) 1
+
+/**
+ * This is the program's main function.
+ */
 int main (int argc, char* argv[])
 {
-    subproc sp;             /* The sub-process. */
-    struct timespec ts_sp;  /* Timer for the the sub-process. */
-    struct timespec ts_out; /* Timer for output about whether the sub-process is running. */
-    char* tstamp;           /* A time stamp. */
+    subproc sp; /* The sub-process. */
+
+    /* The time at which the subproc was executed. */
+    struct timespec sp_start;
+
+    /* The time at which the subproc's status was last printed to the user. */
+    struct timespec last_status;
+
+    char* tstamp;   /* A time stamp. */
     bool running = true;    /* Whether the loop should loop. */
 
     /* Initialise the subprocess and use it to execute a shell command. */
     subproc_init(&sp);
     subproc_exec(&sp, "ls", "./output/");
+    start_timer(&sp_start);
 
-    /* Set the timespecs with the current time. */
-    start_timer(&ts_sp);
-    start_timer(&ts_out);
+    /* subproc_exec() will have printed a status message. */
+    start_timer(&last_status);
 
-    /* Running the processes. */
+    /* Run the processes. */
     while (running)
     {
         /* Check if the subproc should be terminated. */
-        if (check_timer(ts_sp, SPROC_RUN_TIME))
+        if (check_timer(sp_start, SPROC_RUN_TIME))
         {
             /* Print a status message. */
             fprintf( stdout,
@@ -58,7 +69,10 @@ int main (int argc, char* argv[])
             /* Stop the loop from looping. */
             running = false;
         }
-        else if (check_timer( ts_out, BLOCK_RUN_FREQ))
+
+        /* Check if the user should be updated as to the status of
+         * the subproc. */
+        else if (check_timer(last_status, STATUS_FREQ_TIME))
         {
             /* Print a status message. */
             fprintf(stdout, 
@@ -66,7 +80,7 @@ int main (int argc, char* argv[])
                     (tstamp = timestamp()));
  
             /* Reset the timer. */
-            start_timer(&ts_out); 
+            start_timer(&last_status); 
         }
     }
 
